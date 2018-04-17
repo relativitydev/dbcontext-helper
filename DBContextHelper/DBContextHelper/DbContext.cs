@@ -1,4 +1,4 @@
-﻿using DBContextHelper.Exceptions;
+﻿using DbContextHelper.Exceptions;
 using Relativity.API;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 
 // ReSharper disable InconsistentNaming
 
-namespace DBContextHelper
+namespace DbContextHelper
 {
 	public class DbContext : IDBContext
 	{

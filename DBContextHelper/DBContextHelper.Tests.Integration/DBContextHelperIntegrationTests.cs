@@ -11,7 +11,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 
-namespace DBContextHelper.Tests.Integration
+namespace DbContextHelper.Tests.Integration
 {
 	[TestFixture]
 	public class DbContextHelperIntegrationTests
