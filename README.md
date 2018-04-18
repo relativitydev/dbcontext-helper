@@ -3,10 +3,12 @@ Open Source Community: We have a created a helper to accommodate the removal of 
 
 Usage example:
 
+```
 public IDBContext GetDBContext()
 {
 	DbContextHelper.DbContext dbContext = new DbContextHelper.DbContext("SQL_SERVER_ADDRESS", "SQL_DATABASE_NAME", "SQL_USER_NAME", "SQL_PASSWORD");
 	return dbContext;
 }
+```
 
-You can also find the implementation of DbContextHelper.DbContext in the 'relativity-test-helpers' Github project (https://github.com/relativitydev/relativity-test-helpers).
+You can also find the implementation of DbContextHelper.DbContext in the [relativity-test-helpers](https://github.com/relativitydev/relativity-test-helpers) Github project.
