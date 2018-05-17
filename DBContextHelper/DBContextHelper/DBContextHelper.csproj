@@ -31,29 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="kCura.Relativity.Client, Version=9.5.169.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Rsapi.9.5.169.7\lib\kCura.Relativity.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Relativity.API, Version=9.5.169.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Api.9.5.169.7\lib\Relativity.API.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Relativity.Kepler, Version=1.0.1.333, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.9.5.169.7\lib\Relativity.Kepler.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Relativity.Services.DataContracts, Version=9.5.169.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.9.5.169.7\lib\Relativity.Services.DataContracts.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Relativity.Services.Interfaces, Version=9.5.169.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.9.5.169.7\lib\Relativity.Services.Interfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Relativity.Services.ServiceProxy, Version=1.0.1.333, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.9.5.169.7\lib\Relativity.Services.ServiceProxy.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Relativity.API, Version=9.6.26.97, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.Api.9.6.26.97\lib\Relativity.API.dll</HintPath>
     </Reference>
     <Reference Include="Relativity.Test.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RelativityTestHelpersNuget.2.0.0\lib\Relativity.Test.Helpers.dll</HintPath>
@@ -74,7 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
