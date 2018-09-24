@@ -512,7 +512,8 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//todo: Releasing connection closes the reader as well. We need to implement a better way to release connection. Commenting this code for now until we have a resolution.
+				//ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -744,10 +745,11 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//todo: Releasing connection closes the reader as well. We need to implement a better way to release connection. Commenting this code for now until we have a resolution.
+				//ReleaseConnection();
 			}
 
-			return returnSqlDataReader;
+						return returnSqlDataReader;
 		}
 
 		public int ExecuteProcedureNonQuery(string procedureName, IEnumerable<SqlParameter> parameters)

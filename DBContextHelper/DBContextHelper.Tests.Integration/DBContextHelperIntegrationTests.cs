@@ -174,9 +174,15 @@ namespace DbContextHelper.Tests.Integration
 			//Act
 			SqlDataReader value = sut.ExecuteParameterizedSQLStatementAsReader(_sql, null, 30);
 
+			//todo: make sure you can access reader
+			while (value.Read())
+			{
+
+			}
+
 			//Assert
 			Assert.IsNotNull(value);
-
+			
 			//Cleanup
 			_sql = "";
 		}
