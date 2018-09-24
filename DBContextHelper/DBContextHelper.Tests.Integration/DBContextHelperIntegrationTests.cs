@@ -192,6 +192,7 @@ namespace DbContextHelper.Tests.Integration
 
 			//Assert
 			Assert.IsNotNull(value);
+			//todo: Add Assert to loop through the reader and test the values.
 
 			//Cleanup
 			_sql = "";
@@ -273,7 +274,10 @@ namespace DbContextHelper.Tests.Integration
 						Console.WriteLine("Failed to create workspace, Retry now...");
 
 						if (j != 5)
+						{
 							continue;
+						}
+
 						_client = null;
 						throw new Exception(
 							$"Failed to create workspace in the setup. Reset the Client to null\nError Message:\n{e.Message}.\nInner Exception Message:\n{e.InnerException.Message}.\nStrack trace:\n{e.StackTrace}.", e);
