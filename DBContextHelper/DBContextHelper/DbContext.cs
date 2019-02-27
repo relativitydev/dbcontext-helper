@@ -1,4 +1,4 @@
-﻿using DbContextHelper.Exceptions;
+﻿using DBContextHelper.Exceptions;
 using Relativity.API;
 using System;
 using System.Collections.Generic;
@@ -6,10 +6,11 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using Relativity.API.Context;
 
 // ReSharper disable InconsistentNaming
 
-namespace DbContextHelper
+namespace DBContextHelper
 {
 	public class DbContext : IDBContext
 	{
@@ -24,8 +25,11 @@ namespace DbContextHelper
 		private readonly SqlConnection _sqlConnection;
 		private SqlTransaction _sqlTransaction;
 		private SqlCommand _sqlCommand;
+
 		private string ConnectionString { get; set; }
-		public string Database { get; }
+	  
+
+	    public string Database { get; }
 		public string ServerName { get; }
 		public bool IsMasterDatabase => Database.Equals("EDDS", StringComparison.CurrentCultureIgnoreCase);
 
@@ -123,10 +127,7 @@ namespace DbContextHelper
 
 		private void ClearCurrentCommand()
 		{
-			if (_sqlCommand != null)
-			{
-				_sqlCommand.Parameters.Clear();
-			}
+			_sqlCommand?.Parameters.Clear();
 
 			_sqlCommand = null;
 		}
@@ -512,8 +513,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				//todo: Releasing connection closes the reader as well. We need to implement a better way to release connection. Commenting this code for now until we have a resolution.
-				//ReleaseConnection();
+				ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -651,8 +651,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				//todo: Releasing connection closes the reader as well. We need to implement a better way to release connection. Commenting this code for now until we have a resolution.
-				//ReleaseConnection();
+				ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -745,11 +744,10 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				//todo: Releasing connection closes the reader as well. We need to implement a better way to release connection. Commenting this code for now until we have a resolution.
-				//ReleaseConnection();
+				ReleaseConnection();
 			}
 
-						return returnSqlDataReader;
+			return returnSqlDataReader;
 		}
 
 		public int ExecuteProcedureNonQuery(string procedureName, IEnumerable<SqlParameter> parameters)
@@ -888,5 +886,77 @@ namespace DbContextHelper
 
 			return returnDataSet;
 		}
+
+	    public void ExecuteSqlBulkCopy(IDataReader dataReader, ISqlBulkCopyParameters bulkCopyParameters)
+	    {
+	        if (dataReader == null)
+	        {
+	            throw new ArgumentNullException(nameof(dataReader));
+	        }
+
+	        if (bulkCopyParameters == null)
+	        {
+	            throw new ArgumentNullException(nameof(bulkCopyParameters));
+	        }
+
+		    if (string.IsNullOrWhiteSpace(bulkCopyParameters.DestinationTableName))
+		    {
+			    throw new ArgumentOutOfRangeException(nameof(bulkCopyParameters.DestinationTableName), $"{nameof(bulkCopyParameters.DestinationTableName)} can't be null or whitespace.");
+		    }
+
+			if (string.IsNullOrWhiteSpace(bulkCopyParameters.DestinationTableName))
+			{
+				throw new ArgumentOutOfRangeException(nameof(bulkCopyParameters.DestinationTableName), $"{nameof(bulkCopyParameters.DestinationTableName)} can't be null or whitespace.");
+			}
+
+			try
+			{
+	            GetConnection(true);
+	            _sqlCommand = _sqlConnection.CreateCommand();
+	            _sqlCommand.Connection = _sqlConnection;
+	            _sqlCommand.Transaction = _sqlTransaction;
+	            _sqlCommand.CommandTimeout = SqlCommand_DefaultTimeout;
+
+                if (true)
+                {
+                    BulkInsertIntoTable(_sqlConnection, dataReader, bulkCopyParameters);
+
+                }
+
+            }
+            catch (Exception sqlException)
+	        {
+	            //todo: log error
+	            throw new DbContextHelperException(SqlExceptionMessage_Default, sqlException);
+	        }
+	        finally
+	        {
+	            ReleaseConnection();
+	        }
+        }
+
+        //Bulk Insert data
+        private void BulkInsertIntoTable(SqlConnection sqlConnection, IDataReader dataReader, ISqlBulkCopyParameters bulkCopyParameters)
+	    {
+	        using (var bulkCopy = new SqlBulkCopy(sqlConnection))
+	        {
+	            bulkCopy.DestinationTableName = bulkCopyParameters.DestinationTableName;
+				//todo: Implement all of the properties of bulkCopy, similar to core
+		        //bulkCopy.BatchSize = bulkCopyParameters.BatchSize.Value;
+		       // bulkCopy.BulkCopyTimeout = bulkCopyParameters.Timeout.Value;
+		    
+		        foreach (var columnMapping in bulkCopyParameters.ColumnMappings)
+	            {
+	                bulkCopy.ColumnMappings.Add(columnMapping);
+	            }
+	            Console.WriteLine("Started bulk insert of redactions now!");
+	            bulkCopy.WriteToServer(dataReader);
+	            Console.WriteLine("Completed bulk insert of redactions now!");
+	            bulkCopy.Close();
+            }
+	    }
+
+		
 	}
+        
 }

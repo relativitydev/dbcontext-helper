@@ -2,44 +2,60 @@
 using kCura.Relativity.Client.DTOs;
 using NUnit.Framework;
 using Relativity.API;
-using Relativity.Test.Helpers;
-using Relativity.Test.Helpers.ServiceFactory.Extentions;
-using Relativity.Test.Helpers.SharedTestHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using Relativity.API.Context;
+using SqlBulkCopyParameters = kCura.Data.RowDataGateway.SqlBulkCopyParameters;
 
-namespace DbContextHelper.Tests.Integration
+namespace DBContextHelper.Tests.Integration
 {
-	[TestFixture]
+    [TestFixture]
 	public class DbContextHelperIntegrationTests
 	{
+		#region variables
+
 		private string _sql;
 		private IServicesMgr _servicesManager;
 		private IRSAPIClient _client;
 		private int _workspaceId;
 		private string _workspaceName = "DBContext Helper";
 		private string _workspaceNameChange = "DBContext Utility";
+		private string TEST_WORKSPACE_TEMPLATE_NAME = "New Case Template";
+		public static int WorkspaceID = -1;
+		public static Uri WebApiUri => new Uri(BaseRelativityURL + "webapi/");
+		public static Uri ServicesUri => new Uri(BaseRelativityURL + ".Services");
+		public static Uri RestUri => new Uri(BaseRelativityURL + ".REST/api");
 
 		public DbContext sut { get; set; }
 
+		//Insert configurations
+		public static readonly string _userName = "";
+		public static readonly string _password = "";
+		public static readonly string BaseRelativityURL = "http://<server name >/Relativity";
+		public static string SQL_SERVER_ADDRESS = "";
+		public static string SQL_USER_NAME = "";
+		public static string SQL_PASSWORD = "";
+
+		#endregion
+
+		#region Setup
 
 		[SetUp]
 		public void Setup()
 		{
 			//Setup for testing		
-			TestHelper helper = new TestHelper();
-			_servicesManager = helper.GetServicesManager();
-
-			// implement_IHelper
 			//create client
-			_client = helper.GetServicesManager().GetProxy<IRSAPIClient>(ConfigurationHelper.ADMIN_USERNAME, ConfigurationHelper.DEFAULT_PASSWORD);
-
-			sut = new DbContext(Relativity.Test.Helpers.SharedTestHelpers.ConfigurationHelper.SQL_SERVER_ADDRESS, string.Format("EDDS"), Relativity.Test.Helpers.SharedTestHelpers.ConfigurationHelper.SQL_USER_NAME, Relativity.Test.Helpers.SharedTestHelpers.ConfigurationHelper.SQL_PASSWORD);
+			_client = GetRsapiClient();
+			sut = new DbContext(SQL_SERVER_ADDRESS, string.Format("EDDS"), SQL_USER_NAME, SQL_PASSWORD);
 
 		}
+
+		#endregion
+
+		#region Tests
 
 		[Test]
 		public void ExecuteSqlStatementAsDataTable_Valid_sqlstring()
@@ -174,15 +190,9 @@ namespace DbContextHelper.Tests.Integration
 			//Act
 			SqlDataReader value = sut.ExecuteParameterizedSQLStatementAsReader(_sql, null, 30);
 
-			//todo: make sure you can access reader
-			while (value.Read())
-			{
-
-			}
-
 			//Assert
 			Assert.IsNotNull(value);
-			
+
 			//Cleanup
 			_sql = "";
 		}
@@ -198,7 +208,6 @@ namespace DbContextHelper.Tests.Integration
 
 			//Assert
 			Assert.IsNotNull(value);
-			//todo: Add Assert to loop through the reader and test the values.
 
 			//Cleanup
 			_sql = "";
@@ -253,7 +262,65 @@ namespace DbContextHelper.Tests.Integration
 			_sql = "";
 		}
 
+
+	    [Test]
+	    public void ExecuteSqlBulkCopy_Valid()
+	    {
+	        //Arrange
+	       //Create table TestTable
+		    string tableName = "TestTable";
+		    _sql = String.Format(@"CREATE TABLE TestTable (testID int,testCount int);");
+		    sut.ExecuteSqlStatementAsDataSet(_sql, null, 30);	    
+
+			//Create Bulk Copy Parameters
+			ISqlBulkCopyParameters bulkCopyParameters = new Relativity.API.Context.SqlBulkCopyParameters();
+			SqlBulkCopyColumnMapping testID = new SqlBulkCopyColumnMapping("ID","testID");
+		    bulkCopyParameters.ColumnMappings.Add(testID);
+			SqlBulkCopyColumnMapping count = new SqlBulkCopyColumnMapping("Count" , "testCount");
+		    bulkCopyParameters.ColumnMappings.Add(count);
+		    bulkCopyParameters.DestinationTableName = tableName;
+
+			//Act
+			using (IDataReader reader = GetSampleDataReader())
+	        {
+	            sut.ExecuteSqlBulkCopy(reader, bulkCopyParameters);
+            }
+
+			//Cleanup
+			// Delete testtable
+		    string _sqldrop = String.Format(@"DROP TABLE TestTable;");
+		    sut.ExecuteSqlStatementAsDataSet(_sqldrop, null, 30);
+		}
+
+		#endregion
+
 		#region Helpers
+
+		private IDataReader GetSampleDataReader()
+	    {
+	        var dt = new DataTable();
+	        dt.Columns.Add("ID", typeof(int));
+	        dt.Columns.Add("Count", typeof(int));
+	        dt.Rows.Add(1, 2);
+	        dt.Rows.Add(3, 4);
+	        return dt.CreateDataReader();
+	    }
+
+		public IRSAPIClient GetRsapiClient()
+		{
+			try
+			{
+				IRSAPIClient proxy = new RSAPIClient(ServicesUri, new UsernamePasswordCredentials(_userName, _password));
+				proxy.APIOptions.WorkspaceID = WorkspaceID;
+				return proxy;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Failed to connect to RSAPI. " + ex);
+				throw;
+			}
+		}
+
 		private Int32 CreateWorkspace()
 		{
 			try
@@ -270,8 +337,7 @@ namespace DbContextHelper.Tests.Integration
 						Console.WriteLine("Creating workspace.....");
 
 						_workspaceId =
-						Relativity.Test.Helpers.WorkspaceHelpers.CreateWorkspace.CreateWorkspaceAsync(_workspaceName, ConfigurationHelper.TEST_WORKSPACE_TEMPLATE_NAME, _servicesManager, ConfigurationHelper.ADMIN_USERNAME,
-							ConfigurationHelper.DEFAULT_PASSWORD).Result;
+						Helpers.ArtifactHelpers.CreateWorkspace(_client,_workspaceName,TEST_WORKSPACE_TEMPLATE_NAME);
 						Console.WriteLine($"Workspace created [WorkspaceArtifactId= {_workspaceId}].....");
 						j = 5;
 					}
@@ -280,10 +346,7 @@ namespace DbContextHelper.Tests.Integration
 						Console.WriteLine("Failed to create workspace, Retry now...");
 
 						if (j != 5)
-						{
 							continue;
-						}
-
 						_client = null;
 						throw new Exception(
 							$"Failed to create workspace in the setup. Reset the Client to null\nError Message:\n{e.Message}.\nInner Exception Message:\n{e.InnerException.Message}.\nStrack trace:\n{e.StackTrace}.", e);
