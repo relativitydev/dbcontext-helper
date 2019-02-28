@@ -18,11 +18,9 @@ namespace DBContextHelper.Tests.Integration
 
 		private string _sql;
 		private IRSAPIClient _rsapiClient;
-		private int _workspaceArtifactId;
 		private const string WorkspaceName = "DBContext Helper";
 		private const string WorkspaceNameChange = "DBContext Utility";
 		private const string TestWorkspaceTemplateName = "New Case Template";
-		private const int WorkspaceId = -1;
 		private static readonly Uri ServicesUri = new Uri(BaseRelativityUrl + ".Services");
 
 		//Insert configurations
@@ -41,7 +39,8 @@ namespace DBContextHelper.Tests.Integration
 		public void Setup()
 		{
 			//create client
-			_rsapiClient = _rsapiClient = RsapiHelper.CreateRsapiClient(ServicesUri, RelativityAdminUserName, RelativityAdminPassword, WorkspaceId);
+			_rsapiClient = RsapiHelper.CreateRsapiClient(ServicesUri, RelativityAdminUserName, RelativityAdminPassword);
+			_rsapiClient.APIOptions.WorkspaceID = -1;
 			Sut = new DbContext(SqlServerAddress, "EDDS", SqlUserName, SqlPassword);
 		}
 
@@ -108,9 +107,9 @@ namespace DBContextHelper.Tests.Integration
 		public void ExecuteNonQuerySQLStatement_Valid_Sql_String()
 		{
 			//Arrange
-			_workspaceArtifactId = RsapiHelper.CreateWorkspace(_rsapiClient, WorkspaceName, TestWorkspaceTemplateName);
-			_sql = $"update [EDDS].[EDDSDBO].[Case] Set Name = '{WorkspaceNameChange}' where ArtifactID = '{_workspaceArtifactId}'";
-			string sql2 = $"SELECT Name  FROM [EDDS].[EDDSDBO].[Case] where ArtifactID = {_workspaceArtifactId} ";
+			int newWorkspaceArtifactId = RsapiHelper.CreateWorkspace(_rsapiClient, WorkspaceName, TestWorkspaceTemplateName);
+			_sql = $"update [EDDS].[EDDSDBO].[Case] Set Name = '{WorkspaceNameChange}' where ArtifactID = '{newWorkspaceArtifactId}'";
+			string sql2 = $"SELECT Name FROM [EDDS].[EDDSDBO].[Case] where ArtifactID = {newWorkspaceArtifactId} ";
 
 			//Act
 			Sut.ExecuteNonQuerySQLStatement(_sql, null, 30);
@@ -121,7 +120,7 @@ namespace DBContextHelper.Tests.Integration
 
 			//Cleanup
 			_sql = "";
-			RsapiHelper.DeleteWorkspace(_rsapiClient, _workspaceArtifactId);
+			RsapiHelper.DeleteWorkspace(_rsapiClient, newWorkspaceArtifactId);
 		}
 
 		[Test]

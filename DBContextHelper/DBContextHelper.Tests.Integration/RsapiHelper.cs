@@ -7,12 +7,11 @@ namespace DBContextHelper.Tests.Integration
 {
 	public class RsapiHelper
 	{
-		public static IRSAPIClient CreateRsapiClient(Uri servicesUri, string userName, string password, int workspaceArtifactId)
+		public static IRSAPIClient CreateRsapiClient(Uri servicesUri, string userName, string password)
 		{
 			try
 			{
 				IRSAPIClient rsapiClient = new RSAPIClient(servicesUri, new UsernamePasswordCredentials(userName, password));
-				rsapiClient.APIOptions.WorkspaceID = workspaceArtifactId;
 				return rsapiClient;
 			}
 			catch (Exception ex)
