@@ -91,7 +91,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DBContextHelperIntegrationTests.cs" />
-    <Compile Include="Helpers\ArtifactHelpers.cs" />
+    <Compile Include="RsapiHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
