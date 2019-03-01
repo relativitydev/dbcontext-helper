@@ -1,4 +1,4 @@
-﻿namespace DBContextHelper.Exceptions
+﻿namespace DbContextHelper.Exceptions
 {
 	[System.Serializable]
 	public class DbContextHelperException : System.Exception
