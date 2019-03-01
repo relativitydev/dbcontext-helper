@@ -45,9 +45,8 @@
     <Reference Include="kCura, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Relativity.Other.10.1.116.12\lib\net462\kCura.dll</HintPath>
     </Reference>
-    <Reference Include="kCura.Relativity.Client, Version=9.5.169.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Rsapi.9.5.169.7\lib\kCura.Relativity.Client.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="kCura.Relativity.Client, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.Rsapi.10.1.116.12\lib\net462\kCura.Relativity.Client.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.11.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.11.0\lib\net45\nunit.framework.dll</HintPath>
@@ -58,9 +57,8 @@
     <Reference Include="Relativity.API, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Relativity.Api.10.1.116.12\lib\net462\Relativity.API.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.Kepler, Version=1.0.1.333, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.9.5.169.7\lib\Relativity.Kepler.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Relativity.Kepler, Version=1.0.1.557, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.ObjectManager.10.1.116.12\lib\net462\Relativity.Kepler.dll</HintPath>
     </Reference>
     <Reference Include="Relativity.Logging, Version=2018.11.5.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Relativity.Logging.2018.11.5\lib\net462\Relativity.Logging.dll</HintPath>
@@ -68,17 +66,14 @@
     <Reference Include="Relativity.Logging.Interfaces, Version=2018.11.5.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Relativity.Logging.2018.11.5\lib\net462\Relativity.Logging.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.Services.DataContracts, Version=9.5.169.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.9.5.169.7\lib\Relativity.Services.DataContracts.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Relativity.Services.DataContracts, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.ObjectManager.10.1.116.12\lib\net462\Relativity.Services.DataContracts.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.Services.Interfaces, Version=9.5.169.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.9.5.169.7\lib\Relativity.Services.Interfaces.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Relativity.Services.Interfaces, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.ObjectManager.10.1.116.12\lib\net462\Relativity.Services.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.Services.ServiceProxy, Version=1.0.1.333, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.9.5.169.7\lib\Relativity.Services.ServiceProxy.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Relativity.Services.ServiceProxy, Version=1.0.1.557, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.ObjectManager.10.1.116.12\lib\net462\Relativity.Services.ServiceProxy.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
