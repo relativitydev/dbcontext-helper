@@ -7,8 +7,8 @@
     <ProjectGuid>{821037F3-633B-4B7B-8DAA-50DC90B6BF34}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DBContextHelper</RootNamespace>
-    <AssemblyName>DBContextHelper</AssemblyName>
+    <RootNamespace>DbContextHelper</RootNamespace>
+    <AssemblyName>DbContextHelper</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

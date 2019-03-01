@@ -1,4 +1,5 @@
-﻿using kCura.Relativity.Client;
+﻿using DbContextHelper;
+using kCura.Relativity.Client;
 using NUnit.Framework;
 using Relativity.API.Context;
 using System;

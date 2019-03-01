@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DFC16829-30CF-4581-ACF0-18F3E11B9DC1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DBContextHelper.Tests.Integration</RootNamespace>
-    <AssemblyName>DBContextHelper.Tests.Integration</AssemblyName>
+    <RootNamespace>DbContextHelper.Tests.Integration</RootNamespace>
+    <AssemblyName>DbContextHelper.Tests.Integration</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -17,6 +18,8 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,9 +49,8 @@
       <HintPath>..\packages\Relativity.Rsapi.9.5.169.7\lib\kCura.Relativity.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunit.framework, Version=3.11.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.11.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Relativity, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Relativity.Other.10.1.116.12\lib\net462\Relativity.dll</HintPath>
@@ -90,7 +92,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DBContextHelperIntegrationTests.cs" />
+    <Compile Include="DbContextHelperIntegrationTests.cs" />
     <Compile Include="RsapiHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,9 +103,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DBContextHelper\DBContextHelper.csproj">
+    <ProjectReference Include="..\DbContextHelper\DbContextHelper.csproj">
       <Project>{821037f3-633b-4b7b-8daa-50dc90b6bf34}</Project>
-      <Name>DBContextHelper</Name>
+      <Name>DbContextHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +131,12 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.11.0\build\NUnit.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

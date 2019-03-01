@@ -1,15 +1,16 @@
 ﻿using DBContextHelper.Exceptions;
 using Relativity.API;
-using Relativity.API.Context;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using Relativity.API.Context;
+
 // ReSharper disable InconsistentNaming
 
-namespace DBContextHelper
+namespace DbContextHelper
 {
 	public class DbContext : IDBContext
 	{
