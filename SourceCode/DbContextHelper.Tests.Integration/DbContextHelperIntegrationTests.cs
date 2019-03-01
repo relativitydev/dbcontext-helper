@@ -19,18 +19,18 @@ namespace DBContextHelper.Tests.Integration
 
 		private string _sql;
 		private IRSAPIClient _rsapiClient;
-		private const string WorkspaceName = "DBContext Helper";
-		private const string WorkspaceNameChange = "DBContext Utility";
+		private const string WorkspaceName = "DbContext Helper";
+		private const string WorkspaceNameChange = "DbContext Utility";
 		private const string TestWorkspaceTemplateName = "New Case Template";
 		private static readonly Uri ServicesUri = new Uri(BaseRelativityUrl + ".Services");
 
 		//Insert configurations
-		private const string RelativityAdminUserName = "relativity.admin@relativity.com";
-		private const string RelativityAdminPassword = "Test1234!";
-		private const string BaseRelativityUrl = "http://172.20.109.86/Relativity";
-		private const string SqlServerAddress = "172.20.109.86";
-		private const string SqlUserName = "EDDSDBO";
-		private const string SqlPassword = "Test1234!";
+		private const string RelativityAdminUserName = "relativity_admin_user_name";
+		private const string RelativityAdminPassword = "relativity_admin_password";
+		private const string BaseRelativityUrl = "http://localhost/Relativity";
+		private const string SqlServerAddress = "localhost";
+		private const string SqlUserName = "sql_user_name";
+		private const string SqlPassword = "sql_password";
 
 		#endregion
 
