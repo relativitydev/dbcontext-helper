@@ -1,5 +1,6 @@
 ﻿using DbContextHelper.Exceptions;
 using Relativity.API;
+using Relativity.API.Context;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,11 +21,12 @@ namespace DbContextHelper
 		private const string SqlExceptionMessage_Default = "An error occured when executing the SQL Statement. Check inner exception.";
 		private const string SqlExceptionMessage_RollbackSuccess = "An error occured when executing the SQL Statement. Rollback Success. Check inner exception.";
 		private const string SqlExceptionMessage_RollbackFail = "An error occured when executing the SQL Statement. Rollback Failed. Check inner exception.";
-		private const string SqlExceptionMessage_ExecuteAsList = "An error occured when executing the SQL Statement as a List. Check inner exception.";
+		private const string SqlExceptionMessage_SqlBulkCopy = "An error occured when performing Sql Bulk Copy. Check inner exception.";
 		private readonly SqlConnection _sqlConnection;
 		private SqlTransaction _sqlTransaction;
 		private SqlCommand _sqlCommand;
-		private string ConnectionString { get; set; }
+
+		private string ConnectionString { get; }
 		public string Database { get; }
 		public string ServerName { get; }
 		public bool IsMasterDatabase => Database.Equals("EDDS", StringComparison.CurrentCultureIgnoreCase);
@@ -67,7 +69,7 @@ namespace DbContextHelper
 
 		public void BeginTransaction()
 		{
-			_sqlConnection.Open();
+			GetConnection(true);
 			_sqlTransaction = _sqlConnection.BeginTransaction();
 		}
 
@@ -123,11 +125,7 @@ namespace DbContextHelper
 
 		private void ClearCurrentCommand()
 		{
-			if (_sqlCommand != null)
-			{
-				_sqlCommand.Parameters.Clear();
-			}
-
+			_sqlCommand?.Parameters.Clear();
 			_sqlCommand = null;
 		}
 
@@ -512,8 +510,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				//todo: Releasing connection closes the reader as well. We need to implement a better way to release connection. Commenting this code for now until we have a resolution.
-				//ReleaseConnection();
+				ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -651,8 +648,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				//todo: Releasing connection closes the reader as well. We need to implement a better way to release connection. Commenting this code for now until we have a resolution.
-				//ReleaseConnection();
+				ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -745,11 +741,10 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				//todo: Releasing connection closes the reader as well. We need to implement a better way to release connection. Commenting this code for now until we have a resolution.
-				//ReleaseConnection();
+				ReleaseConnection();
 			}
 
-						return returnSqlDataReader;
+			return returnSqlDataReader;
 		}
 
 		public int ExecuteProcedureNonQuery(string procedureName, IEnumerable<SqlParameter> parameters)
@@ -887,6 +882,78 @@ namespace DbContextHelper
 			}
 
 			return returnDataSet;
+		}
+
+		public void ExecuteSqlBulkCopy(IDataReader dataReader, ISqlBulkCopyParameters bulkCopyParameters)
+		{
+			if (dataReader == null)
+			{
+				throw new ArgumentNullException(nameof(dataReader));
+			}
+
+			if (bulkCopyParameters == null)
+			{
+				throw new ArgumentNullException(nameof(bulkCopyParameters));
+			}
+
+			if (string.IsNullOrWhiteSpace(bulkCopyParameters.DestinationTableName))
+			{
+				throw new ArgumentException(nameof(bulkCopyParameters.DestinationTableName), $"{nameof(bulkCopyParameters.DestinationTableName)} can't be null or whitespace.");
+			}
+
+			if (string.IsNullOrWhiteSpace(bulkCopyParameters.DestinationTableName))
+			{
+				throw new ArgumentException(nameof(bulkCopyParameters.DestinationTableName), $"{nameof(bulkCopyParameters.DestinationTableName)} can't be null or whitespace.");
+			}
+
+			try
+			{
+				GetConnection(true);
+				_sqlCommand = _sqlConnection.CreateCommand();
+				_sqlCommand.Connection = _sqlConnection;
+				_sqlCommand.Transaction = _sqlTransaction;
+				_sqlCommand.CommandTimeout = SqlCommand_DefaultTimeout;
+
+				using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(_sqlConnection))
+				{
+					if (bulkCopyParameters.BatchSize.HasValue)
+					{
+						sqlBulkCopy.BatchSize = bulkCopyParameters.BatchSize.Value;
+					}
+
+					if (bulkCopyParameters.Timeout.HasValue)
+					{
+						sqlBulkCopy.BulkCopyTimeout = bulkCopyParameters.Timeout.Value;
+					}
+
+					if (bulkCopyParameters.EnableStreaming.HasValue)
+					{
+						sqlBulkCopy.EnableStreaming = bulkCopyParameters.EnableStreaming.Value;
+					}
+
+					sqlBulkCopy.DestinationTableName = bulkCopyParameters.DestinationTableName;
+
+					foreach (SqlBulkCopyColumnMapping columnMapping in bulkCopyParameters.ColumnMappings)
+					{
+						sqlBulkCopy.ColumnMappings.Add(columnMapping);
+					}
+
+					//todo: log executing sql
+
+					//Perform bulk copy
+					sqlBulkCopy.WriteToServer(dataReader);
+				}
+			}
+			catch (Exception sqlException)
+			{
+				//todo: log error
+				throw new DbContextHelperException(SqlExceptionMessage_SqlBulkCopy, sqlException);
+			}
+			finally
+			{
+				dataReader.Close();
+				ReleaseConnection();
+			}
 		}
 	}
 }
