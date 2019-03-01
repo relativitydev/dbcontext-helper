@@ -126,7 +126,6 @@ namespace DbContextHelper
 		private void ClearCurrentCommand()
 		{
 			_sqlCommand?.Parameters.Clear();
-
 			_sqlCommand = null;
 		}
 
