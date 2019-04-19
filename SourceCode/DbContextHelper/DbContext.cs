@@ -218,7 +218,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnDataTable;
@@ -294,7 +294,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnObject;
@@ -365,7 +365,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnObject;
@@ -446,7 +446,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnRowAffectedCount;
@@ -510,7 +510,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -568,7 +568,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnDataTable;
@@ -648,7 +648,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -695,7 +695,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnList;
@@ -741,7 +741,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -799,7 +799,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnRowAffectedCount;
@@ -878,7 +878,7 @@ namespace DbContextHelper
 			}
 			finally
 			{
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 
 			return returnDataSet;
@@ -952,7 +952,7 @@ namespace DbContextHelper
 			finally
 			{
 				dataReader.Close();
-				ReleaseConnection();
+				//ReleaseConnection();
 			}
 		}
 	}
