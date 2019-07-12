@@ -27,6 +27,11 @@ namespace DbContextHelper
 		private SqlCommand _sqlCommand;
 
 		private string ConnectionString { get; }
+		public T ExecuteSqlStatementAsObject<T>(string sqlStatement, Func<SqlDataReader, T> converter, IEnumerable<SqlParameter> parameters, int timeoutValue)
+		{
+			throw new NotImplementedException();
+		}
+
 		public string Database { get; }
 		public string ServerName { get; }
 		public bool IsMasterDatabase => Database.Equals("EDDS", StringComparison.CurrentCultureIgnoreCase);
@@ -701,6 +706,11 @@ namespace DbContextHelper
 			return returnList;
 		}
 
+		public IEnumerable<T> ExecuteSqlStatementAsEnumerable<T>(string sqlStatement, Func<SqlDataReader, T> converter, IEnumerable<SqlParameter> parameters)
+		{
+			throw new NotImplementedException();
+		}
+
 		public DbDataReader ExecuteProcedureAsReader(string procedureName, IEnumerable<SqlParameter> parameters)
 		{
 			if (string.IsNullOrWhiteSpace(procedureName))
@@ -954,6 +964,21 @@ namespace DbContextHelper
 				dataReader.Close();
 				ReleaseConnection();
 			}
+		}
+
+		public T ExecuteSqlStatementAsObject<T>(string sqlStatement, Func<SqlDataReader, T> converter)
+		{
+			throw new NotImplementedException();
+		}
+
+		public T ExecuteSqlStatementAsObject<T>(string sqlStatement, Func<SqlDataReader, T> convertor, int timeout = -1)
+		{
+			throw new NotImplementedException();
+		}
+
+		public T ExecuteSqlStatementAsObject<T>(string sqlStatement, Func<SqlDataReader, T> converter, IEnumerable<SqlParameter> parameters)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
