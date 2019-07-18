@@ -508,10 +508,6 @@ namespace DbContextHelper
 				//todo: log error
 				throw new DbContextHelperException(SqlExceptionMessage_Default, sqlException);
 			}
-			finally
-			{
-				ReleaseConnection();
-			}
 
 			return returnSqlDataReader;
 		}
@@ -646,10 +642,6 @@ namespace DbContextHelper
 				//todo: log error
 				throw new DbContextHelperException(SqlExceptionMessage_Default, sqlException);
 			}
-			finally
-			{
-				ReleaseConnection();
-			}
 
 			return returnSqlDataReader;
 		}
@@ -761,10 +753,6 @@ namespace DbContextHelper
 			{
 				//todo: log error
 				throw new DbContextHelperException(SqlExceptionMessage_Default, sqlException);
-			}
-			finally
-			{
-				ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
