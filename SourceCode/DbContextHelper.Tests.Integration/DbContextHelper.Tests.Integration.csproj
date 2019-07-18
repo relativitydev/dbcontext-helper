@@ -87,7 +87,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DbContextHelperIntegrationTests.cs" />
+    <Compile Include="DbContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

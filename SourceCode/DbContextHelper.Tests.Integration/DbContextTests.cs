@@ -11,7 +11,7 @@ using System.Threading;
 namespace DBContextHelper.Tests.Integration
 {
 	[TestFixture]
-	public class DbContextHelperIntegrationTests
+	public class DbContextTests
 	{
 		#region variables
 
