@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading;
 
 namespace DBContextHelper.Tests.Integration
@@ -88,10 +89,6 @@ namespace DBContextHelper.Tests.Integration
 			//Cleanup
 			_sql = "";
 		}
-
-		/// <summary>
-		/// This sql statement here is making an update to your database. PLEASE USE WITH CAUTION!!
-		/// </summary>
 
 		[Test]
 		public void ExecuteNonQuerySQLStatement_Valid_Sql_String()
@@ -181,7 +178,7 @@ namespace DBContextHelper.Tests.Integration
 		}
 
 		[Test]
-		public void ExecuteSQLStatementAsEnumerable_Valid_Sql_String()
+		public void ExecuteSQLStatementAsEnumerable_With_Timeout_Valid_Sql_String()
 		{
 			//Arrange
 			_sql = "SELECT [ArtifactID], [Name] FROM [EDDS].[EDDSDBO].[Case]";
@@ -191,6 +188,58 @@ namespace DBContextHelper.Tests.Integration
 
 			//Assert
 			Assert.IsNotNull(value);
+
+			//Cleanup
+			_sql = "";
+		}
+
+		[Test]
+		public void ExecuteSQLStatementAsEnumerable_With_SqlParameters_Valid_Sql_String()
+		{
+			//Arrange
+			_sql = "SELECT [ArtifactID], [Name] FROM [EDDS].[EDDSDBO].[Case] WHERE NAME = @caseName";
+			const string caseName = "New Case Template";
+			IEnumerable<SqlParameter> sqlParameters = new List<SqlParameter>{
+				new SqlParameter
+				{
+					ParameterName = "@caseName",
+					SqlDbType = SqlDbType.NVarChar,
+					Direction = ParameterDirection.Input,
+					Value = caseName
+				}};
+
+			//Act
+			IEnumerable<string> value = Sut.ExecuteSqlStatementAsEnumerable<string>(_sql, ConvertToString, sqlParameters);
+
+			//Assert
+			Assert.IsNotNull(value);
+			Assert.Greater(Convert.ToInt32(value.FirstOrDefault()), 1);
+
+			//Cleanup
+			_sql = "";
+		}
+
+		[Test]
+		public void ExecuteSqlStatementAsObject_Valid_Sql_String()
+		{
+			//Arrange
+			_sql = "SELECT TOP 1 [ArtifactID], [Name] FROM [EDDS].[EDDSDBO].[Case] WHERE NAME = @caseName";
+			const string caseName = "New Case Template";
+			IEnumerable<SqlParameter> sqlParameters = new List<SqlParameter>{
+				new SqlParameter
+				{
+					ParameterName = "@caseName",
+					SqlDbType = SqlDbType.NVarChar,
+					Direction = ParameterDirection.Input,
+					Value = caseName
+				}};
+
+			//Act
+			string value = Sut.ExecuteSqlStatementAsObject<string>(_sql, ConvertToString, sqlParameters, 30);
+
+			//Assert
+			Assert.IsNotNull(value);
+			Assert.Greater(Convert.ToInt32(value), 1);
 
 			//Cleanup
 			_sql = "";

@@ -1036,7 +1036,9 @@ namespace DbContextHelper
 
 				//todo: log executing sql
 				SqlDataReader sqlDataReader = _sqlCommand.ExecuteReader();
+				sqlDataReader.Read();
 				returnObject = converter(sqlDataReader);
+				sqlDataReader.Close();
 
 				CommitTransaction();
 			}
