@@ -15,9 +15,7 @@ namespace DBContextHelper.Tests.Integration
 	public class DbContextTests
 	{
 		#region variables
-
 		public DbContext Sut { get; set; }
-
 		private string _sql;
 
 		//Insert configurations
