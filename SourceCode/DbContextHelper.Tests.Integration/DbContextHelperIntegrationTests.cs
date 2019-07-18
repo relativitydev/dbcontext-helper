@@ -1,5 +1,4 @@
 ﻿using DbContextHelper;
-using kCura.Relativity.Client;
 using NUnit.Framework;
 using Relativity.API.Context;
 using System;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Threading;
 
 namespace DBContextHelper.Tests.Integration
 {
@@ -18,16 +18,8 @@ namespace DBContextHelper.Tests.Integration
 		public DbContext Sut { get; set; }
 
 		private string _sql;
-		private IRSAPIClient _rsapiClient;
-		private const string WorkspaceName = "DbContext Helper";
-		private const string WorkspaceNameChange = "DbContext Utility";
-		private const string TestWorkspaceTemplateName = "New Case Template";
-		private static readonly Uri ServicesUri = new Uri(BaseRelativityUrl + ".Services");
 
 		//Insert configurations
-		private const string RelativityAdminUserName = "relativity_admin_user_name";
-		private const string RelativityAdminPassword = "relativity_admin_password";
-		private const string BaseRelativityUrl = "http://localhost/Relativity";
 		private const string SqlServerAddress = "localhost";
 		private const string SqlUserName = "sql_user_name";
 		private const string SqlPassword = "sql_password";
@@ -39,9 +31,6 @@ namespace DBContextHelper.Tests.Integration
 		[SetUp]
 		public void Setup()
 		{
-			//create client
-			_rsapiClient = RsapiHelper.CreateRsapiClient(ServicesUri, RelativityAdminUserName, RelativityAdminPassword);
-			_rsapiClient.APIOptions.WorkspaceID = -1;
 			Sut = new DbContext(SqlServerAddress, "EDDS", SqlUserName, SqlPassword);
 		}
 
@@ -108,20 +97,23 @@ namespace DBContextHelper.Tests.Integration
 		public void ExecuteNonQuerySQLStatement_Valid_Sql_String()
 		{
 			//Arrange
-			int newWorkspaceArtifactId = RsapiHelper.CreateWorkspace(_rsapiClient, WorkspaceName, TestWorkspaceTemplateName);
-			_sql = $"update [EDDS].[EDDSDBO].[Case] Set Name = '{WorkspaceNameChange}' where ArtifactID = '{newWorkspaceArtifactId}'";
-			string sql2 = $"SELECT Name FROM [EDDS].[EDDSDBO].[Case] where ArtifactID = {newWorkspaceArtifactId} ";
+			const string newValue = "ABC";
+			_sql = $"UPDATE [EDDS].[EDDSDBO].[Artifact] SET [Keywords] = '{newValue}' WHERE [ArtifactID] = -1";
+			const string querySql = "SELECT TOP 1 [Keywords] FROM [EDDS].[EDDSDBO].[Artifact] WHERE [ArtifactID] = -1";
+			string originalValue = Sut.ExecuteSqlStatementAsScalar<string>(querySql, null, 30);
+			string cleanUpSql = $"UPDATE [EDDS].[EDDSDBO].[Artifact] SET [Keywords] = '{originalValue}' WHERE [ArtifactID] = -1";
 
 			//Act
 			Sut.ExecuteNonQuerySQLStatement(_sql, null, 30);
-			object value = Sut.ExecuteSqlStatementAsScalar(sql2, null, 30);
 
 			//Assert
-			Assert.AreEqual(value.ToString(), WorkspaceNameChange);
+			string queriedValue = Sut.ExecuteSqlStatementAsScalar<string>(querySql, null, 30);
+			Assert.AreEqual(queriedValue, newValue);
 
 			//Cleanup
 			_sql = "";
-			RsapiHelper.DeleteWorkspace(_rsapiClient, newWorkspaceArtifactId);
+			Thread.Sleep(TimeSpan.FromSeconds(10));
+			Sut.ExecuteNonQuerySQLStatement(cleanUpSql, null, 30);
 		}
 
 		[Test]

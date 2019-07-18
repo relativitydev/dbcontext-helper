@@ -88,7 +88,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DbContextHelperIntegrationTests.cs" />
-    <Compile Include="RsapiHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
