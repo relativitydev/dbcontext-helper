@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>RelativityDev.DbContextHelper</id>
+    <version>3.0.0.2</version>
+    <authors>RelativityDev</authors>
+    <owners>RelativityDev</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/relativitydev/dbcontext-helper/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/relativitydev/dbcontext-helper</projectUrl>
+    <iconUrl>https://bit.ly/2qFJQzk</iconUrl>
+    <description>This NuGet package contains an implementation of the Relativity.API.IDBContext Interface. This is a community supported implementation. An example of its usage can be found in the Github relativity-test-helpers repository. If this does not meet your needs for your implementation you are invited to contribute to the project.</description>
+    <releaseNotes>Initial version.</releaseNotes>
+    <copyright></copyright>
+    <tags>Relativity.API.IDBContext Relativity API IDBContext</tags>
+  </metadata>
+  <files>
+    <file src="SourceCode\Github\dbcontext-helper\SourceCode\DbContextHelper\bin\$configuration$\DbContextHelper.dll" target="lib\net462\" />
+  </files>
+</package>
