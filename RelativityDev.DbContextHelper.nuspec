@@ -15,6 +15,6 @@
     <tags>Relativity.API.IDBContext Relativity API IDBContext</tags>
   </metadata>
   <files>
-    <file src="SourceCode\Github\dbcontext-helper\SourceCode\DbContextHelper\bin\$configuration$\DbContextHelper.dll" target="lib\net462\" />
+    <file src="SourceCode\DbContextHelper\bin\$configuration$\DbContextHelper.dll" target="lib\net462\" />
   </files>
 </package>
