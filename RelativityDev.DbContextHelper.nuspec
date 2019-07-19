@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/relativitydev/dbcontext-helper</projectUrl>
     <iconUrl>https://bit.ly/2qFJQzk</iconUrl>
     <description>This NuGet package contains an implementation of the Relativity.API.IDBContext Interface. This is a community supported implementation. An example of its usage can be found in the Github relativity-test-helpers repository. If this does not meet your needs for your implementation you are invited to contribute to the project.</description>
-    <releaseNotes>Initial version.</releaseNotes>
+    <releaseNotes>https://github.com/relativitydev/dbcontext-helper</releaseNotes>
     <copyright></copyright>
     <tags>Relativity.API.IDBContext Relativity API IDBContext</tags>
   </metadata>
