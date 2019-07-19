@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" />
+  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -42,38 +42,38 @@
     <Reference Include="BCrypt.Net, Version=0.1.5073.29922, Culture=neutral, PublicKeyToken=6bcd409ee6bc9292, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
     </Reference>
-    <Reference Include="kCura, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Other.10.1.116.12\lib\net462\kCura.dll</HintPath>
+    <Reference Include="kCura, Version=10.2.170.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.Other.10.2.170.2\lib\net462\kCura.dll</HintPath>
     </Reference>
-    <Reference Include="kCura.Relativity.Client, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Rsapi.10.1.116.12\lib\net462\kCura.Relativity.Client.dll</HintPath>
+    <Reference Include="kCura.Relativity.Client, Version=10.2.170.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.Rsapi.10.2.170.2\lib\net462\kCura.Relativity.Client.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.11.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.11.0\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Other.10.1.116.12\lib\net462\Relativity.dll</HintPath>
+    <Reference Include="Relativity, Version=10.2.170.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.Other.10.2.170.2\lib\net462\Relativity.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.API, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Api.10.1.116.12\lib\net462\Relativity.API.dll</HintPath>
+    <Reference Include="Relativity.API, Version=10.2.170.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.Api.10.2.170.2\lib\net462\Relativity.API.dll</HintPath>
     </Reference>
     <Reference Include="Relativity.Kepler, Version=1.0.1.557, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.10.1.116.12\lib\net462\Relativity.Kepler.dll</HintPath>
+      <HintPath>..\packages\Relativity.ObjectManager.10.2.170.2\lib\net462\Relativity.Kepler.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.Logging, Version=2018.11.5.9, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Logging.2018.11.5\lib\net462\Relativity.Logging.dll</HintPath>
+    <Reference Include="Relativity.Logging, Version=2019.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.Logging.2019.5.1\lib\net462\Relativity.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.Logging.Interfaces, Version=2018.11.5.9, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.Logging.2018.11.5\lib\net462\Relativity.Logging.Interfaces.dll</HintPath>
+    <Reference Include="Relativity.Logging.Interfaces, Version=2019.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.Logging.2019.5.1\lib\net462\Relativity.Logging.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.Services.DataContracts, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.10.1.116.12\lib\net462\Relativity.Services.DataContracts.dll</HintPath>
+    <Reference Include="Relativity.Services.DataContracts, Version=10.2.170.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.ObjectManager.10.2.170.2\lib\net462\Relativity.Services.DataContracts.dll</HintPath>
     </Reference>
-    <Reference Include="Relativity.Services.Interfaces, Version=10.1.116.12, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.10.1.116.12\lib\net462\Relativity.Services.Interfaces.dll</HintPath>
+    <Reference Include="Relativity.Services.Interfaces, Version=10.2.170.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Relativity.ObjectManager.10.2.170.2\lib\net462\Relativity.Services.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="Relativity.Services.ServiceProxy, Version=1.0.1.557, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Relativity.ObjectManager.10.1.116.12\lib\net462\Relativity.Services.ServiceProxy.dll</HintPath>
+      <HintPath>..\packages\Relativity.ObjectManager.10.2.170.2\lib\net462\Relativity.Services.ServiceProxy.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -87,8 +87,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DbContextHelperIntegrationTests.cs" />
-    <Compile Include="RsapiHelper.cs" />
+    <Compile Include="DbContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +129,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.11.0\build\NUnit.props'))" />
+    <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

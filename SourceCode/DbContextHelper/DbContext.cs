@@ -508,10 +508,6 @@ namespace DbContextHelper
 				//todo: log error
 				throw new DbContextHelperException(SqlExceptionMessage_Default, sqlException);
 			}
-			finally
-			{
-				ReleaseConnection();
-			}
 
 			return returnSqlDataReader;
 		}
@@ -646,24 +642,32 @@ namespace DbContextHelper
 				//todo: log error
 				throw new DbContextHelperException(SqlExceptionMessage_Default, sqlException);
 			}
-			finally
-			{
-				ReleaseConnection();
-			}
 
 			return returnSqlDataReader;
 		}
 
 		public IEnumerable<T> ExecuteSQLStatementAsEnumerable<T>(string sqlStatement, Func<SqlDataReader, T> converter, int timeout = -1)
 		{
+			return ExecuteSqlStatementAsEnumerable(sqlStatement, converter, null, timeout);
+		}
+
+		public IEnumerable<T> ExecuteSqlStatementAsEnumerable<T>(string sqlStatement, Func<SqlDataReader, T> converter, IEnumerable<SqlParameter> parameters)
+		{
+			return ExecuteSqlStatementAsEnumerable(sqlStatement, converter, parameters, -1);
+		}
+
+		private IEnumerable<T> ExecuteSqlStatementAsEnumerable<T>(string sqlStatement, Func<SqlDataReader, T> converter, IEnumerable<SqlParameter> parameters, int timeout)
+		{
 			if (string.IsNullOrWhiteSpace(sqlStatement))
 			{
 				throw new ArgumentNullException(nameof(sqlStatement));
 			}
+
 			if (timeout == -1)
 			{
 				timeout = SqlCommand_DefaultTimeout;
 			}
+
 			if (timeout < 1)
 			{
 				throw new ArgumentException($"{nameof(timeout)} is not valid. [Value: {timeout}]. '{nameof(timeout)}' should be greater than zero.");
@@ -679,6 +683,18 @@ namespace DbContextHelper
 				_sqlCommand.CommandText = sqlStatement;
 				_sqlCommand.CommandTimeout = timeout;
 
+				if (parameters != null)
+				{
+					List<SqlParameter> sqlParameters = parameters.ToList();
+					if (sqlParameters.Any())
+					{
+						foreach (SqlParameter sqlParameter in sqlParameters)
+						{
+							_sqlCommand.Parameters.Add(sqlParameter);
+						}
+					}
+				}
+
 				//todo: log executing sql
 				SqlDataReader sqlDataReader = _sqlCommand.ExecuteReader();
 
@@ -686,7 +702,6 @@ namespace DbContextHelper
 				{
 					returnList.Add(converter(sqlDataReader));
 				}
-
 			}
 			catch (Exception sqlException)
 			{
@@ -738,10 +753,6 @@ namespace DbContextHelper
 			{
 				//todo: log error
 				throw new DbContextHelperException(SqlExceptionMessage_Default, sqlException);
-			}
-			finally
-			{
-				ReleaseConnection();
 			}
 
 			return returnSqlDataReader;
@@ -954,6 +965,91 @@ namespace DbContextHelper
 				dataReader.Close();
 				ReleaseConnection();
 			}
+		}
+
+		public T ExecuteSqlStatementAsObject<T>(string sqlStatement, Func<SqlDataReader, T> converter)
+		{
+			return ExecuteSqlStatementAsObject(sqlStatement, converter, null, -1);
+		}
+
+		public T ExecuteSqlStatementAsObject<T>(string sqlStatement, Func<SqlDataReader, T> convertor, int timeout = -1)
+		{
+			return ExecuteSqlStatementAsObject(sqlStatement, convertor, null, timeout);
+		}
+
+		public T ExecuteSqlStatementAsObject<T>(string sqlStatement, Func<SqlDataReader, T> converter, IEnumerable<SqlParameter> parameters)
+		{
+			return ExecuteSqlStatementAsObject(sqlStatement, converter, parameters, -1);
+		}
+
+		public T ExecuteSqlStatementAsObject<T>(string sqlStatement, Func<SqlDataReader, T> converter, IEnumerable<SqlParameter> parameters, int timeoutValue)
+		{
+			if (string.IsNullOrWhiteSpace(sqlStatement))
+			{
+				throw new ArgumentNullException(nameof(sqlStatement));
+			}
+
+			if (timeoutValue == -1)
+			{
+				timeoutValue = SqlCommand_DefaultTimeout;
+			}
+
+			if (timeoutValue < 1)
+			{
+				throw new ArgumentException($"{nameof(timeoutValue)} is not valid. [Value: {timeoutValue}]. '{nameof(timeoutValue)}' should be greater than zero.");
+			}
+
+			T returnObject;
+
+			try
+			{
+				BeginTransaction();
+				_sqlCommand = _sqlConnection.CreateCommand();
+				_sqlCommand.Connection = _sqlConnection;
+				_sqlCommand.Transaction = _sqlTransaction;
+				_sqlCommand.CommandText = sqlStatement;
+				_sqlCommand.CommandTimeout = timeoutValue;
+
+				if (parameters != null)
+				{
+					List<SqlParameter> sqlParameters = parameters.ToList();
+					if (sqlParameters.Any())
+					{
+						foreach (SqlParameter sqlParameter in sqlParameters)
+						{
+							_sqlCommand.Parameters.Add(sqlParameter);
+						}
+					}
+				}
+
+				//todo: log executing sql
+				SqlDataReader sqlDataReader = _sqlCommand.ExecuteReader();
+				sqlDataReader.Read();
+				returnObject = converter(sqlDataReader);
+				sqlDataReader.Close();
+
+				CommitTransaction();
+			}
+			catch (Exception sqlException)
+			{
+				//todo: log error
+
+				try
+				{
+					RollbackTransaction();
+					throw new DbContextHelperException(SqlExceptionMessage_RollbackSuccess, sqlException);
+				}
+				catch (Exception rollbackException)
+				{
+					throw new DbContextHelperException(SqlExceptionMessage_RollbackFail, rollbackException);
+				}
+			}
+			finally
+			{
+				ReleaseConnection();
+			}
+
+			return returnObject;
 		}
 	}
 }
