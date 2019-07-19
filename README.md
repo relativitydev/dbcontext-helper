@@ -12,3 +12,4 @@ public IDBContext GetDBContext()
 ```
 
 You can also find the implementation of DbContextHelper.DbContext in the [relativity-test-helpers](https://github.com/relativitydev/relativity-test-helpers) Github project.
+
