@@ -7,6 +7,8 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 // ReSharper disable InconsistentNaming
 
@@ -1050,6 +1052,51 @@ namespace DbContextHelper
 			}
 
 			return returnObject;
+		}
+
+		public Task<IDbConnection> GetConnectionAsync(CancellationToken cancelToken)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task BeginTransactionAsync(CancellationToken cancelToken)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task ExecuteBulkCopyAsync(IDataReader source, ISqlBulkCopyParameters parameters, CancellationToken cancelToken)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<DataTable> ExecuteDataTableAsync(IQuery query)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<IDataReader> ExecuteReaderAsync(IQuery query)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<int> ExecuteNonQueryAsync(IQuery query)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<T> ExecuteObjectAsync<T>(IQuery query, Func<IDataReader, CancellationToken, Task<T>> converter)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<T> ExecuteScalarAsync<T>(IQuery query)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<IEnumerable<T>> ExecuteEnumerableAsync<T>(IQuery query, Func<IDataRecord, CancellationToken, Task<T>> converter)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
