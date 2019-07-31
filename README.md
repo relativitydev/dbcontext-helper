@@ -13,3 +13,4 @@ public IDBContext GetDBContext()
 
 You can also find the implementation of DbContextHelper.DbContext in the [relativity-test-helpers](https://github.com/relativitydev/relativity-test-helpers) Github project.
 
+**_Note_: This repository is meant to help with the transition of your existing projects to accomoadate for the removal of creating a new instance of DbContext capability. For new releases, we will be adding any new methods added to the IDbContext interface but these methods will not be implemented. They will throw a NotImplementedException. We made this an open-source project so that if anyone needs the new methods to have actual implementation, we encourage you to implement them and then contribute to the project.**
