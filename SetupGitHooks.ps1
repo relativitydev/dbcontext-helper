@@ -1,0 +1,1 @@
+Copy-Item .\Hooks\pre-push -Destination .\.git\hooks\
